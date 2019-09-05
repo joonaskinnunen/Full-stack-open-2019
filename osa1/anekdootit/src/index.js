@@ -17,26 +17,42 @@ const App = (props) => {
 
     const length = anecdotes.length;
     const randomNumber = Math.floor(Math.random() * length);
-
+    let bestAnecdoteLocation = 0;
 
     const addVote = () => {
         const copy = [...votes]
         copy[randomNumber] += 1
         setVotes(copy)
-        setSelected(selected + 1)  
+        setSelected(selected + 1)
     }
-    
-        
-    
+
+    const getTheBestAnecdote = () => {
+        let mostVotes = 0;
+
+        for(let i = 0; i < votes.length; i++) {
+            if(votes[i] > mostVotes) {
+                mostVotes = votes[i];
+                bestAnecdoteLocation = i;
+            }
+        }
+        return anecdotes[bestAnecdoteLocation];
+    }
+
+
+
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             {props.anecdotes[randomNumber]}
             <br />
             <p>Has {votes[randomNumber]} votes</p>
             <br />
             <Button text="vote" handleClick={() => addVote()} />
             <Button text="next anecdote" handleClick={() => setSelected(selected + 1)} />
+            <h1>Anecdote with the most votes</h1>
+            <p>{getTheBestAnecdote()}</p>
+            <p>Has {votes[bestAnecdoteLocation]} votes</p>
         </div>
     )
 }
@@ -51,7 +67,7 @@ const anecdotes = [
 ]
 
 ReactDOM.render(
-    <App anecdotes={anecdotes}/>,
+    <App anecdotes={anecdotes} />,
     document.getElementById('root')
 )
 
