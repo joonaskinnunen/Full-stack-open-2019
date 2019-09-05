@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+//Header elementti
 const Header = () => {
     return (
         <div>
@@ -14,18 +15,36 @@ const Button = (props) => (
         {props.text}
     </button>
 )
-
+//elementti yksittäisen statiikkarivin näyttämiseen
+const Statistic = (props) => {
+    return (
+        <tr>
+            <td>
+                {props.text}
+            </td>
+            <td>
+                {props.value}
+            </td>
+        </tr>
+    )
+}
+// elementti statistiikkojen näyttämiseen
 const Statistics = (props) => {
     if (props.all > 0) {
-        return (<div>
-            <h1>Statistics</h1>
-            <p>good {props.good}</p>
-            <p>neutral {props.neutral}</p>
-            <p>bad {props.bad}</p>
-            <p>all {props.all}</p>
-            <p>average {props.average}</p>
-            <p>positive {props.positive} %</p>
-        </div>
+        return (
+            <div>
+                <h1>Statistics</h1>
+                <table>
+                    <tbody>
+                        <Statistic text="good" value={props.good} />
+                        <Statistic text="neutral" value={props.neutral} />
+                        <Statistic text="bad" value={props.bad} />
+                        <Statistic text="all" value={props.all} />
+                        <Statistic text="average" value={props.average} />
+                        <Statistic text="positive" value={props.positive + "%"} />
+                    </tbody>
+                </table>
+            </div>
         )
     }
     return (<div><h1>Statistics</h1><p>No feedback given</p></div>)
