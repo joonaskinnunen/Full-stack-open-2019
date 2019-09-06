@@ -7,9 +7,15 @@ const Header = props =>
 const Part = props =>
   <p>{props.part.name} {props.part.exercises}</p>
 
+const Total = props => {
+  const exercisesArr = props.parts.map(x => x.exercises)
+  const total = exercisesArr.reduce((accumulator, currentValue) => accumulator + currentValue)
+  return <p>yhteensä {total} tehtävää</p>
+}
 const Content = props => (
   <div>
     {props.parts.map((x, i) => <Part part={x} key={i} />)}
+    <Total parts={props.parts} />
   </div>
 )
 
