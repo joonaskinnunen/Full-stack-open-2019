@@ -1,5 +1,40 @@
 import React, { useState } from 'react'
 
+const Filter = (props) => {
+  return (<div>
+    <p>Filter shown with <input value={props.inputValue} onChange={props.onChangeFunction} /></p>
+  </div>
+  )
+}
+
+const NewEntry = (props) => {
+  return (
+    <div>
+      <h2>Add a new</h2>
+      <form onSubmit={props.onSubmitFunction}>
+        <div>
+          name: <input value={props.nameInputValue} onChange={props.nameOnChangeFunction} />
+        </div>
+        <div>
+          number: <input value={props.numberInputValue} onChange={props.numberOnChangeFunction} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+const NumbersListing = (props) => {
+  return (
+    <div>
+      <h2>Numbers</h2>
+      {props.personsArr.map((x, i) => x.name.toLowerCase().includes(props.filterWord.toLowerCase()) || x.number.includes(props.filterWord.toLowerCase()) ? <p key={i}>{x.name} {x.number}</p> : console.log("Ei sisällä haettavaa sanaa"))}
+    </div>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Matti Meikäläinen', number: '0505001234' }
@@ -44,21 +79,9 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <p>Filter shown with <input value={newSearch} onChange={handleSearchChange} /></p>
-      <h2>Add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {persons.map((x, i) => x.name.toLowerCase().includes(newSearch.toLowerCase()) || x.number.includes(newSearch.toLowerCase()) ? <p key={i}>{x.name} {x.number}</p> : console.log("Ei sisällä haettavaa sanaa"))}
+      <Filter inputValue={newSearch} onChangeFunction={handleSearchChange} />
+      <NewEntry onSubmitFunction={addName} nameInputValue={newName} nameOnChangeFunction={handleNameChange} numberInputValue={newNumber} numberOnChangeFunction={handleNumberChange} />
+      <NumbersListing personsArr={persons} filterWord={newSearch} />
     </div>
   )
 
