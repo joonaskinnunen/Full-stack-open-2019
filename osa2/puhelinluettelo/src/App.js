@@ -6,6 +6,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newSearch, setNewSearch] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
@@ -35,9 +36,16 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleSearchChange = (event) => {
+    console.log(event.target.value)
+    setNewSearch(event.target.value)
+  }
+
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <p>Filter shown with <input value={newSearch} onChange={handleSearchChange} /></p>
+      <h2>Add a new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -50,7 +58,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((x, i) => <p key={i}>{x.name} {x.number}</p>)}
+      {persons.map((x, i) => x.name.toLowerCase().includes(newSearch.toLowerCase()) || x.number.includes(newSearch.toLowerCase()) ? <p key={i}>{x.name} {x.number}</p> : console.log("Ei sisällä haettavaa sanaa"))}
     </div>
   )
 
