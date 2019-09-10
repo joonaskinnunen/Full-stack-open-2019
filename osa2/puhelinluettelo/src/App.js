@@ -1,39 +1,7 @@
 import React, { useState } from 'react'
-
-const Filter = (props) => {
-  return (<div>
-    <p>Filter shown with <input value={props.inputValue} onChange={props.onChangeFunction} /></p>
-  </div>
-  )
-}
-
-const NewEntry = (props) => {
-  return (
-    <div>
-      <h2>Add a new</h2>
-      <form onSubmit={props.onSubmitFunction}>
-        <div>
-          name: <input value={props.nameInputValue} onChange={props.nameOnChangeFunction} />
-        </div>
-        <div>
-          number: <input value={props.numberInputValue} onChange={props.numberOnChangeFunction} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-    </div>
-  )
-}
-
-const NumbersListing = (props) => {
-  return (
-    <div>
-      <h2>Numbers</h2>
-      {props.personsArr.map((x, i) => x.name.toLowerCase().includes(props.filterWord.toLowerCase()) || x.number.includes(props.filterWord.toLowerCase()) ? <p key={i}>{x.name} {x.number}</p> : console.log("Ei sisällä haettavaa sanaa"))}
-    </div>
-  )
-}
+import FilteredResults from './components/FilteredResults'
+import NumbersListing from './components/NumbersListing'
+import NewEntry from './components/NewEntry'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -79,7 +47,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter inputValue={newSearch} onChangeFunction={handleSearchChange} />
+      <FilteredResults inputValue={newSearch} onChangeFunction={handleSearchChange} />
       <NewEntry onSubmitFunction={addName} nameInputValue={newName} nameOnChangeFunction={handleNameChange} numberInputValue={newNumber} numberOnChangeFunction={handleNumberChange} />
       <NumbersListing personsArr={persons} filterWord={newSearch} />
     </div>
