@@ -7,6 +7,7 @@ const App = () => {
   const [newSearch, setNewSearch] = useState('')
   const [countries, setCountries] = useState([])
 
+
   const handleSearchChange = (event) => {
     console.log(event.target.value)
     setNewSearch(event.target.value)

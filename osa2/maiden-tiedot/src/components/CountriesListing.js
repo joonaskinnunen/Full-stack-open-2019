@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Weather from './Weather'
 
 const CountriesListing = (props) => {
-    let resultsArr = []
-    props.countriesArr.map((x, i) => x.name.toLowerCase().includes(props.filterWord.toLowerCase()) ? resultsArr.push(x) : console.log("Not match"))
+    const [displayCountryInfo, toggleDisplayCountryInfo] = useState(false)
+    const [countryToShow, setCountryToShow] = useState(false)
 
-    const OneResult = () => {
-        const result = resultsArr[0]
+    let resultsArr = []
+    props.countriesArr.map((x, i) => x.name.toLowerCase().includes(props.filterWord.toLowerCase()) ? resultsArr.push(x) : void 0)
+
+    const OneResult = (props) => {
         return (
             <div>
-                <h2>{resultsArr[0].name}</h2>
-                <p>capital: {result.capital}</p>
-                <p>population: {result.population}</p>
+                <h2>{props.country.name}</h2>
+                <p>capital: {props.country.capital}</p>
+                <p>population: {props.country.population}</p>
                 <h3>Languages</h3>
                 <ul>
-                    {result.languages.map((x) => <li>{x.name}</li>)}
+                    {props.country.languages.map((x, i) => <li key={i}>{x.name}</li>)}
                 </ul>
-                <img src={result.flag} height="150px" alt="flag" />
+                {props.country.flag ? <img src={props.country.flag} height="150px" alt="flag" /> : console.log("No country flag")}
+                {props.country.capital ? <Weather city={props.country.capital} /> : console.log("No capital city")}
             </div>
         )
     }
@@ -25,12 +29,27 @@ const CountriesListing = (props) => {
             <p>Too many matches, specify another filter</p>
         )
     }
+    const handleClick = (prop) => {
+        if (prop === countryToShow) {
+            toggleDisplayCountryInfo(!displayCountryInfo)
+        } else {
+            setCountryToShow(prop)
+            toggleDisplayCountryInfo(true)
+        }
+
+        console.log(displayCountryInfo)
+
+    }
+
 
     const Results = () => {
         return (
-            <ul>
-                {resultsArr.map((x, i) => <li key={i}>{x.name}</li>)}
-            </ul>
+            <div>
+                <ul>
+                    {resultsArr.map((x, i) => <li key={i}>{x.name}<button onClick={() => handleClick(x)}>{countryToShow === x && displayCountryInfo === true ? <span>hide</span> : <span>show</span>}</button></li>)}
+                </ul>
+                {displayCountryInfo ? <OneResult country={countryToShow} /> : void 0}
+            </div>
         )
     }
 
@@ -38,7 +57,7 @@ const CountriesListing = (props) => {
         <div>
             {resultsArr.length > 10 && props.filterWord.length > 0 ? <TooManyResults /> : console.log(void 0)}
             {resultsArr.length < 10 && resultsArr.length > 1 ? <Results /> : console.log(void 0)}
-            {resultsArr.length === 1 && <OneResult />}
+            {resultsArr.length === 1 && <OneResult country={resultsArr[0]} />}
             {resultsArr.length === 0 && props.filterWord.length > 0 ? <p>No results</p> : void 0}
         </div>
 
