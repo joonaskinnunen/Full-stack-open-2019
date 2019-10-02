@@ -27,15 +27,31 @@ const App = () => {
       number: newNumber,
     }
 
-    noteService
-      .create(nameObject)
-      .then(returnedName => {
-        setPersons(persons.concat(returnedName))
-        setNewName('')
-        setNewNumber('')
-      })
+    if (persons.some(x => x.name === newName)) {
+      if (window.confirm(`${nameObject.name} is already added to phonebook. Replace the old number with a new one?`)) {
+        console.log("confirm works")
+        const note = persons.find(n => n.name === newName)
+        console.log(note)
+        noteService
+          .update(note.id, nameObject)
+          .then(returnedName => {
+            const changedNote = { ...note, number: newNumber }
+            setPersons(persons.map(x => x.name !== newName ? x : changedNote))
+            console.log(returnedName)
+          })
+      }
+    } else {
 
-    console.log('clicked', event.target)
+      noteService
+        .create(nameObject)
+        .then(returnedName => {
+          setPersons(persons.concat(returnedName))
+          setNewName('')
+          setNewNumber('')
+        })
+
+      console.log('clicked', event.target)
+    }
   }
 
   const deleteName = (nameToDelete) => {
